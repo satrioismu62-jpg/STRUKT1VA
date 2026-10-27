@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRUKTIVA — Pembelajaran Interaktif Jenis-Jenis Tumpuan (SMK DPIB)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            950: '#020617',
+                            900: '#03045E',
+                            800: '#023E8A',
+                            700: '#0077B6',
+                            600: '#0096C7',
+                            500: '#00B4D8',
+                            400: '#48CAE4',
+                            300: '#90E0EF',
+                            100: '#CAF0F8',
+                        },
+                        amber: {
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #020617;
+            color: #f8fafc;
+        }
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-hover:hover {
+            border-color: rgba(72, 202, 228, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(0, 119, 182, 0.2);
+        }
+        .glass-teacher {
+            background: rgba(30, 27, 75, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0077B6;
+        }
+        .active-nav {
+            background: linear-gradient(90deg, rgba(0, 119, 182, 0.3) 0%, rgba(0, 150, 199, 0.1) 100%);
+            border-left: 4px solid #00B4D8;
+            color: #48CAE4 !important;
+        }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden select-none">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col justify-between shrink-0 transition-all duration-300 z-20">
+        <div>
+            <!-- Header Logo (Triple-click secret trigger for Teacher Portal) -->
+            <div class="p-5 border-b border-slate-800 flex items-center justify-between cursor-pointer" id="logoClickArea" title="STRUKTIVA DPIB">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-navy-800 to-navy-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-navy-700/30">
+                        <i class="fa-solid fa-cubes-stacked"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wider text-white">STRUKTIVA</h1>
+                        <p class="text-[10px] text-navy-400 font-semibold tracking-widest uppercase">Statika DPIB Kelas X</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links (Student Only - Teacher Portal Button Hidden) -->
+            <nav class="p-3 space-y-1 text-sm font-medium">
+                <button onclick="switchView('beranda')" id="nav-beranda" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-house w-5 text-center text-navy-400"></i> Beranda
+                </button>
+                <button onclick="switchView('materi')" id="nav-materi" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-book-open w-5 text-center text-navy-400"></i> Modul Materi
+                </button>
+                <button onclick="switchView('matrix')" id="nav-matrix" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-table-cells w-5 text-center text-navy-400"></i> Matrix Tumpuan
+                </button>
+                <button onclick="switchView('lab')" id="nav-lab" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-flask-vial w-5 text-center text-navy-400"></i> Virtual Lab Statika
+                </button>
+                <button onclick="switchView('diskusi')" id="nav-diskusi" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-comments w-5 text-center text-navy-400"></i> Diskusi Kelompok
+                </button>
+                <button onclick="switchView('minigames')" id="nav-minigames" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-gamepad w-5 text-center text-navy-400"></i> Tantangan Match
+                </button>
+                <button onclick="switchView('evaluasi')" id="nav-evaluasi" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-clipboard-check w-5 text-center text-navy-400"></i> Evaluasi (Pre/Post)
+                </button>
+            </nav>
+        </div>
+
+        <!-- Sidebar Footer Info -->
+        <div class="p-4 border-t border-slate-800 text-center text-[11px] text-slate-500">
+            SMK DPIB &bull; Statika Bangunan
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-950">
+        <!-- Top Navigation Bar -->
+        <header class="h-16 border-b border-slate-800 bg-slate-900/60 backdrop-blur px-6 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-3">
+                <span id="currentViewTitle" class="text-lg font-bold text-white tracking-wide">Beranda</span>
+                <span class="text-xs px-2.5 py-1 rounded-full bg-navy-900 text-navy-300 border border-navy-700">Mekanika Teknik X DPIB</span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <!-- User Profile Summary -->
+                <div class="flex items-center gap-2 text-xs bg-slate-800/70 border border-slate-700 px-3 py-1.5 rounded-full">
+                    <i class="fa-solid fa-user text-navy-400"></i>
+                    <span id="userProfileDisplay">Siswa DPIB</span>
+                    <button onclick="changeUserProfile()" class="text-slate-400 hover:text-white ml-1" title="Ubah Profil">
+                        <i class="fa-solid fa-pen-to-square text-[10px]"></i>
+                    </button>
+                </div>
+                <!-- Progress Indicator -->
+                <div class="flex items-center gap-2 bg-slate-800/70 border border-slate-700 px-3 py-1.5 rounded-full text-xs">
+                    <i class="fa-solid fa-trophy text-amber-400"></i>
+                    <span id="globalProgressText">Progres: 0/4 Selesai</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Views Wrapper -->
+        <div id="viewContainer" class="flex-1 overflow-y-auto p-6 space-y-6">
+
+            <!-- 1. VIEW BERANDA -->
+            <section id="view-beranda" class="space-y-6">
+                <!-- Guided Discovery Banner -->
+                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-navy-900 via-navy-800 to-slate-900 p-8 border border-navy-700 shadow-2xl">
+                    <div class="absolute -right-10 -bottom-10 opacity-15 text-navy-300 pointer-events-none">
+                        <i class="fa-solid fa-bridge text-[240px]"></i>
+                    </div>
+                    <div class="relative z-10 max-w-2xl space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-500/20 text-navy-300 border border-navy-400/30 text-xs font-semibold">
+                            <i class="fa-solid fa-compass"></i> Guided Discovery Learning Model
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-white leading-tight">STRUKTIVA — Jelajahi Struktur, Pahami Tumpuan</h2>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Mengapa jembatan tidak runtuh saat dilalui beban berat? Mengapa kanopi dapat berdiri kokoh tanpa pilar tambahan? Pelajari perilaku mekanika tumpuan <strong>Sendi</strong>, <strong>Rol</strong>, dan <strong>Jepit</strong> melalui analisis visual &amp; simulasi Virtual Lab interaktif.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <button onclick="switchView('materi')" class="px-5 py-2.5 rounded-xl bg-navy-600 hover:bg-navy-500 text-white font-medium text-sm transition flex items-center gap-2 shadow-lg shadow-navy-600/30">
+                                <i class="fa-solid fa-play"></i> Mulai Belajar Materi
+                            </button>
+                            <button onclick="switchView('lab')" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-medium text-sm transition flex items-center gap-2">
+                                <i class="fa-solid fa-flask-vial text-navy-400"></i> Buka Virtual Lab
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Quick Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div onclick="switchView('materi')" class="glass-panel glass-panel-hover p-5 rounded-2xl cursor-pointer transition space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-navy-800/80 border border-navy-600 flex items-center justify-center text-navy-300 text-xl">
+                            <i class="fa-solid fa-book-bookmark"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Modul Materi &amp; Reaksi</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Pelajari analisis gaya reaksi R<sub>x</sub>, R<sub>y</sub>, Momen (M), dan Derajat Kebebasan (DoF) secara presisi.</p>
+                        <span class="inline-block text-xs font-semibold text-navy-400 group-hover:underline">Buka Modul &rarr;</span>
+                    </div>
+
+                    <div onclick="switchView('lab')" class="glass-panel glass-panel-hover p-5 rounded-2xl cursor-pointer transition space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-navy-800/80 border border-navy-600 flex items-center justify-center text-navy-300 text-xl">
+                            <i class="fa-solid fa-chart-area"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Virtual Lab &amp; Diagram Gaya</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Simulasi gelagar sederhana. Amati perubahan grafik SFD, BMD, dan NFD secara real-time.</p>
+                        <span class="inline-block text-xs font-semibold text-navy-400 group-hover:underline">Buka Simulasi &rarr;</span>
+                    </div>
+
+                    <div onclick="switchView('evaluasi')" class="glass-panel glass-panel-hover p-5 rounded-2xl cursor-pointer transition space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-navy-800/80 border border-navy-600 flex items-center justify-center text-navy-300 text-xl">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white">Pre-Test &amp; Post-Test</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">Uji pemahaman statika secara acak. Tuntaskan Pre-Test untuk membuka Post-Test.</p>
+                        <span class="inline-block text-xs font-semibold text-navy-400 group-hover:underline">Mulai Evaluasi &rarr;</span>
+                    </div>
+                </div>
+
+                <!-- Capaian Pembelajaran DPIB Card -->
+                <div class="glass-panel p-6 rounded-2xl space-y-3">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bullseye text-amber-400"></i> Capaian Pembelajaran Elemen Mekanika Teknik (K-Merdeka DPIB)
+                    </h3>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
+                        <li class="flex items-start gap-2 bg-slate-900/50 p-3 rounded-lg border border-slate-800">
+                            <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                            <span>Siswa mampu mengidentifikasi karakteristik tumpuan Sendi, Rol, dan Jepit pada konstruksi nyata.</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-slate-900/50 p-3 rounded-lg border border-slate-800">
+                            <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                            <span>Siswa mampu menerapkan 3 Persamaan Keseimbangan Statika (ΣF<sub>x</sub> = 0, ΣF<sub>y</sub> = 0, ΣM = 0).</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-slate-900/50 p-3 rounded-lg border border-slate-800">
+                            <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                            <span>Siswa mampu menganalisis reaksi perletakan dan menggambarkan diagram gaya dalam (SFD, BMD, NFD).</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-slate-900/50 p-3 rounded-lg border border-slate-800">
+                            <i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>
+                            <span>Siswa mampu berdiskusi secara kritis dalam menentukan sistem perletakan struktur yang efisien.</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 2. VIEW MODUL MATERI -->
+            <section id="view-materi" class="hidden space-y-6">
+                <!-- 3 Statika Equilibrium Card -->
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-l-navy-500 space-y-4">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-scale-balanced text-navy-400"></i> 3 Syarat Keseimbangan Statika Struktural
+                    </h3>
+                    <p class="text-slate-300 text-xs leading-relaxed">
+                        Agar suatu struktur bangunan berada dalam keadaan diam/statis (tidak bergerak maupun berotasi), maka total akumulasi gaya dan momen yang bekerja wajib memenuhi 3 persamaan dasar berikut:
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                            <div class="text-navy-400 font-mono text-xl font-bold">ΣF<sub>x</sub> = 0</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Jumlah Gaya Horizontal sama dengan NOL</div>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                            <div class="text-navy-400 font-mono text-xl font-bold">ΣF<sub>y</sub> = 0</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Jumlah Gaya Vertikal sama dengan NOL</div>
+                        </div>
+                        <div class="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                            <div class="text-navy-400 font-mono text-xl font-bold">ΣM = 0</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Jumlah Momen Putar sama dengan NOL</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 Support Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- TUMPUAN SENDI -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-4 relative overflow-hidden border-t-4 border-t-emerald-500">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-lg font-bold text-white">Tumpuan Sendi (Hinge)</h4>
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold">1 DoF</span>
+                        </div>
+                        <div class="h-40 bg-slate-900/80 rounded-xl flex items-center justify-center border border-slate-800 p-4">
+                            <!-- SVG Visual Sendi -->
+                            <svg width="180" height="110" viewBox="0 0 180 110" class="w-full h-full">
+                                <line x1="10" y1="30" x2="170" y2="30" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+                                <polygon points="90,30 65,75 115,75" fill="none" stroke="#10b981" stroke-width="3"/>
+                                <circle cx="90" cy="30" r="5" fill="#f8fafc" stroke="#10b981" stroke-width="2"/>
+                                <line x1="50" y1="75" x2="130" y2="75" stroke="#64748b" stroke-width="4"/>
+                                <line x1="55" y1="75" x2="45" y2="85" stroke="#475569" stroke-width="2"/>
+                                <line x1="75" y1="75" x2="65" y2="85" stroke="#475569" stroke-width="2"/>
+                                <line x1="95" y1="75" x2="85" y2="85" stroke="#475569" stroke-width="2"/>
+                                <line x1="115" y1="75" x2="105" y2="85" stroke="#475569" stroke-width="2"/>
+                                <path d="M 90 95 L 90 40" stroke="#38bdf8" stroke-width="2.5"/>
+                                <text x="96" y="60" fill="#38bdf8" font-size="11" font-weight="bold">Ry ≠ 0</text>
+                                <path d="M 35 30 L 75 30" stroke="#f43f5e" stroke-width="2.5"/>
+                                <text x="35" y="22" fill="#f43f5e" font-size="11" font-weight="bold">Rx ≠ 0</text>
+                            </svg>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-300">
+                            <p><strong>Reaksi Gaya:</strong> Menahan gaya <strong>Vertikal (R<sub>y</sub>)</strong> &amp; <strong>Horizontal (R<sub>x</sub>)</strong>.</p>
+                            <p><strong>Momen (M):</strong> = 0 (Tidak menahan momen putar, bebas berrotasi).</p>
+                            <p><strong>Derajat Kebebasan:</strong> 1 DoF (Hanya rotasi sudut).</p>
+                            <p class="text-slate-400"><strong>Contoh Nyata:</strong> Sambungan paku keling/pasak rangka atap baja, engsel penopang jembatan.</p>
+                        </div>
+                    </div>
+
+                    <!-- TUMPUAN ROL -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-4 relative overflow-hidden border-t-4 border-t-cyan-500">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-lg font-bold text-white">Tumpuan Rol (Roller)</h4>
+                            <span class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 text-xs font-mono font-bold">2 DoF</span>
+                        </div>
+                        <div class="h-40 bg-slate-900/80 rounded-xl flex items-center justify-center border border-slate-800 p-4">
+                            <!-- SVG Visual Rol -->
+                            <svg width="180" height="110" viewBox="0 0 180 110" class="w-full h-full">
+                                <line x1="10" y1="30" x2="170" y2="30" stroke="#94a3b8" stroke-width="6" stroke-linecap="round"/>
+                                <polygon points="90,30 70,60 110,60" fill="none" stroke="#06b6d4" stroke-width="3"/>
+                                <circle cx="90" cy="30" r="4" fill="#f8fafc" stroke="#06b6d4" stroke-width="2"/>
+                                <circle cx="75" cy="68" r="7" fill="none" stroke="#06b6d4" stroke-width="2"/>
+                                <circle cx="105" cy="68" r="7" fill="none" stroke="#06b6d4" stroke-width="2"/>
+                                <line x1="50" y1="76" x2="130" y2="76" stroke="#64748b" stroke-width="4"/>
+                                <path d="M 90 95 L 90 40" stroke="#38bdf8" stroke-width="2.5"/>
+                                <text x="96" y="55" fill="#38bdf8" font-size="11" font-weight="bold">Ry ≠ 0</text>
+                                <text x="25" y="25" fill="#ef4444" font-size="11" font-weight="bold">Rx = 0 (NOL!)</text>
+                            </svg>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-300">
+                            <p class="text-cyan-300 bg-cyan-950/40 p-2 rounded border border-cyan-800/50">
+                                <strong><i class="fa-solid fa-circle-info"></i> Ketentuan Valid:</strong> Rol <strong>TIDAK MEMILIKI</strong> reaksi horizontal (R<sub>x</sub> = 0). Rol bebas bergeser mendatar!
+                            </p>
+                            <p><strong>Reaksi Gaya:</strong> Hanya menahan gaya <strong>Vertikal (R<sub>y</sub>)</strong>.</p>
+                            <p><strong>Momen (M):</strong> = 0 (Bebas rotasi &amp; bebas translasi horizontal).</p>
+                            <p><strong>Derajat Kebebasan:</strong> 2 DoF (Rotasi &amp; Pergeseran Horizontal).</p>
+                            <p class="text-slate-400"><strong>Fungsi Penting:</strong> Menampung pemuaian/pengerutan suhu pada gelagar jembatan panjang.</p>
+                        </div>
+                    </div>
+
+                    <!-- TUMPUAN JEPIT -->
+                    <div class="glass-panel p-6 rounded-2xl space-y-4 relative overflow-hidden border-t-4 border-t-amber-500">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-lg font-bold text-white">Tumpuan Jepit (Fixed)</h4>
+                            <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 text-xs font-mono font-bold">0 DoF</span>
+                        </div>
+                        <div class="h-40 bg-slate-900/80 rounded-xl flex items-center justify-center border border-slate-800 p-4">
+                            <!-- SVG Visual Jepit -->
+                            <svg width="180" height="110" viewBox="0 0 180 110" class="w-full h-full">
+                                <line x1="40" y1="15" x2="40" y2="95" stroke="#f59e0b" stroke-width="5"/>
+                                <line x1="40" y1="20" x2="25" y2="30" stroke="#f59e0b" stroke-width="2"/>
+                                <line x1="40" y1="40" x2="25" y2="50" stroke="#f59e0b" stroke-width="2"/>
+                                <line x1="40" y1="60" x2="25" y2="70" stroke="#f59e0b" stroke-width="2"/>
+                                <line x1="40" y1="80" x2="25" y2="90" stroke="#f59e0b" stroke-width="2"/>
+                                <line x1="40" y1="55" x2="170" y2="55" stroke="#94a3b8" stroke-width="8" stroke-linecap="round"/>
+                                <text x="60" y="30" fill="#38bdf8" font-size="11" font-weight="bold">Ry ≠ 0</text>
+                                <text x="60" y="82" fill="#f43f5e" font-size="11" font-weight="bold">Rx ≠ 0</text>
+                                <path d="M 85 40 A 15 15 0 1 1 85 70" fill="none" stroke="#a855f7" stroke-width="2.5"/>
+                                <text x="105" y="60" fill="#a855f7" font-size="11" font-weight="bold">M ≠ 0</text>
+                            </svg>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-300">
+                            <p><strong>Reaksi Gaya:</strong> Menahan <strong>Vertikal (R<sub>y</sub>)</strong>, <strong>Horizontal (R<sub>x</sub>)</strong>, dan <strong>Momen (M)</strong>.</p>
+                            <p><strong>Momen (M):</strong> ≠ 0 (Mampu menahan momen jepit/lentur).</p>
+                            <p><strong>Derajat Kebebasan:</strong> 0 DoF (Kaku sempurna / Fully Restrained).</p>
+                            <p class="text-slate-400"><strong>Contoh Nyata:</strong> Tiang pilar beton tertanam di fondasi, kanopi cantilever, tiang lampu jalan.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. VIEW MATRIX PERBANDINGAN -->
+            <section id="view-matrix" class="hidden space-y-6">
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Matrix Komparasi Karakteristik Tumpuan</h3>
+                            <p class="text-xs text-slate-400">Perbandingan komprehensif gaya reaksi, derajat kebebasan, dan simulasi fisik.</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-slate-300 border-collapse">
+                            <thead>
+                                <tr class="bg-slate-900/90 text-navy-300 border-b border-slate-800 font-heading text-sm">
+                                    <th class="p-3">Jenis Tumpuan</th>
+                                    <th class="p-3">Simbol Standard</th>
+                                    <th class="p-3 text-center">Reaksi Vertikal (R<sub>y</sub>)</th>
+                                    <th class="p-3 text-center">Reaksi Horizontal (R<sub>x</sub>)</th>
+                                    <th class="p-3 text-center">Reaksi Momen (M)</th>
+                                    <th class="p-3 text-center">Derajat Kebebasan (DoF)</th>
+                                    <th class="p-3">Aplikasi Dalam Konstruksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800">
+                                <tr class="hover:bg-slate-900/40">
+                                    <td class="p-3 font-bold text-white flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div> Sendi (Hinge)
+                                    </td>
+                                    <td class="p-3 font-mono text-emerald-400">▲ (Segitiga Engsel)</td>
+                                    <td class="p-3 text-center text-emerald-400 font-bold">ADA (R<sub>y</sub> ≠ 0)</td>
+                                    <td class="p-3 text-center text-emerald-400 font-bold">ADA (R<sub>x</sub> ≠ 0)</td>
+                                    <td class="p-3 text-center text-rose-400">NOL (M = 0)</td>
+                                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 font-mono">1 DoF</span></td>
+                                    <td class="p-3">Tumpuan kiri jembatan, perletakan kuda-kuda atap kayu/baja.</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/40">
+                                    <td class="p-3 font-bold text-white flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-cyan-500"></div> Rol (Roller)
+                                    </td>
+                                    <td class="p-3 font-mono text-cyan-400">⚪ (Segitiga Beroda)</td>
+                                    <td class="p-3 text-center text-emerald-400 font-bold">ADA (R<sub>y</sub> ≠ 0)</td>
+                                    <td class="p-3 text-center text-rose-400 font-bold">TIDAK ADA (R<sub>x</sub> = 0)</td>
+                                    <td class="p-3 text-center text-rose-400">NOL (M = 0)</td>
+                                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 font-mono">2 DoF</span></td>
+                                    <td class="p-3">Tumpuan kanan jembatan (dilengkapi perletakan bantalan elastomerik).</td>
+                                </tr>
+                                <tr class="hover:bg-slate-900/40">
+                                    <td class="p-3 font-bold text-white flex items-center gap-2">
+                                        <div class="w-3 h-3 rounded-full bg-amber-500"></div> Jepit (Fixed)
+                                    </td>
+                                    <td class="p-3 font-mono text-amber-400">▌ (Garis Diarsir)</td>
+                                    <td class="p-3 text-center text-emerald-400 font-bold">ADA (R<sub>y</sub> ≠ 0)</td>
+                                    <td class="p-3 text-center text-emerald-400 font-bold">ADA (R<sub>x</sub> ≠ 0)</td>
+                                    <td class="p-3 text-center text-emerald-400 font-bold">ADA (M ≠ 0)</td>
+                                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded bg-slate-800 font-mono">0 DoF</span></td>
+                                    <td class="p-3">Pondasi jembatan tunggal, kanopi beton cantilever, balkon gedung.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. VIEW VIRTUAL LAB STATIKA -->
+            <section id="view-lab" class="hidden space-y-6">
+                <div class="glass-panel p-6 rounded-2xl space-y-4">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-flask-vial text-navy-400"></i> Virtual Lab Simulator &amp; Diagram Gaya Dalam
+                            </h3>
+                            <p class="text-xs text-slate-400">Simulasi Gelagar Sederhana (Simple Beam L = 10 m) dengan Tumpuan Sendi (A) &amp; Rol (B).</p>
+                        </div>
+                        <!-- Preset Config Buttons -->
+                        <div class="flex gap-2">
+                            <button onclick="setLabPreset(25, 5, 90)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700">Beban Tengah (5m)</button>
+                            <button onclick="setLabPreset(40, 2, 60)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700">Beban Miring (60°)</button>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Control Sliders Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                        <!-- Slider Beban P -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">Beban Titik (P):</span>
+                                <span id="valP" class="text-navy-400 font-bold font-mono">25 kN</span>
+                            </div>
+                            <input type="range" id="inputP" min="1" max="50" value="25" class="w-full accent-navy-500 cursor-pointer" oninput="updateLabSimulation()">
+                        </div>
+
+                        <!-- Slider Posisi X -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">Posisi Beban (x):</span>
+                                <span id="valX" class="text-navy-400 font-bold font-mono">5.0 m</span>
+                            </div>
+                            <input type="range" id="inputX" min="1" max="9" step="0.5" value="5" class="w-full accent-navy-500 cursor-pointer" oninput="updateLabSimulation()">
+                        </div>
+
+                        <!-- Slider Sudut Beban Alpha -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-300 font-medium">Sudut Kemiringan (α):</span>
+                                <span id="valAngle" class="text-navy-400 font-bold font-mono">90° (Tegak)</span>
+                            </div>
+                            <input type="range" id="inputAngle" min="30" max="90" step="5" value="90" class="w-full accent-navy-500 cursor-pointer" oninput="updateLabSimulation()">
+                        </div>
+                    </div>
+
+                    <!-- Calculated Reactions Real-time Box -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Reaksi Sendi A (Vertikal)</span>
+                            <div id="resRAy" class="text-lg font-bold text-emerald-400 font-mono">RAy = 12.50 kN</div>
+                        </div>
+                        <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Reaksi Sendi A (Horizontal)</span>
+                            <div id="resRAx" class="text-lg font-bold text-rose-400 font-mono">RAx = 0.00 kN</div>
+                        </div>
+                        <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Reaksi Rol B (Vertikal)</span>
+                            <div id="resRBy" class="text-lg font-bold text-cyan-400 font-mono">RBy = 12.50 kN</div>
+                        </div>
+                        <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+                            <span class="text-[10px] text-slate-400 uppercase font-semibold">Momen Maksimum (M<sub>maks</sub>)</span>
+                            <div id="resMmax" class="text-lg font-bold text-amber-400 font-mono">M = 31.25 kNm</div>
+                        </div>
+                    </div>
+
+                    <!-- CANVAS DIAGRAM GAYA DALAM (SFD, BMD, NFD) -->
+                    <div class="space-y-4">
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                            <h4 class="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">Visualisasi Gelagar &amp; Beban</h4>
+                            <canvas id="beamCanvas" width="800" height="150" class="w-full h-auto bg-slate-900/50 rounded-lg"></canvas>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- SFD Canvas -->
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-emerald-400">Bidang Lintang (SFD / Q)</span>
+                                    <span id="sfdValue" class="text-[10px] font-mono text-slate-400">Qmax: 12.5 kN</span>
+                                </div>
+                                <canvas id="sfdCanvas" width="300" height="120" class="w-full h-auto bg-slate-900/50 rounded-lg"></canvas>
+                            </div>
+
+                            <!-- BMD Canvas -->
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-amber-400">Bidang Momen (BMD / M)</span>
+                                    <span id="bmdValue" class="text-[10px] font-mono text-slate-400">Mmax: 31.25 kNm</span>
+                                </div>
+                                <canvas id="bmdCanvas" width="300" height="120" class="w-full h-auto bg-slate-900/50 rounded-lg"></canvas>
+                            </div>
+
+                            <!-- NFD Canvas -->
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-xs font-bold text-rose-400">Bidang Normal (NFD / N)</span>
+                                    <span id="nfdValue" class="text-[10px] font-mono text-slate-400">N: 0.00 kN</span>
+                                </div>
+                                <canvas id="nfdCanvas" width="300" height="120" class="w-full h-auto bg-slate-900/50 rounded-lg"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. VIEW ALUR DISKUSI KELOMPOK 3 TAHAP -->
+            <section id="view-diskusi" class="hidden space-y-6">
+                <!-- Discussion Header Step Tracker -->
+                <div class="glass-panel p-6 rounded-2xl space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Alur Diskusi Kelompok 3 Tahap (Guided Learning)</h3>
+                            <p class="text-xs text-slate-400">Analisis Studi Kasus: "Penentuan Jenis Tumpuan Jembatan Rangka Baja &amp; Pemuaian Termal"</p>
+                        </div>
+                        <div class="flex gap-2 text-xs">
+                            <span id="badgeStep1" class="px-3 py-1 rounded-full bg-navy-600 text-white font-bold">1. Mandiri</span>
+                            <span id="badgeStep2" class="px-3 py-1 rounded-full bg-slate-800 text-slate-400">2. Galeri Kelas</span>
+                            <span id="badgeStep3" class="px-3 py-1 rounded-full bg-slate-800 text-slate-400">3. Kesimpulan</span>
+                        </div>
+                    </div>
+
+                    <!-- Case Study Context Box -->
+                    <div class="bg-navy-950/60 p-4 rounded-xl border border-navy-800/80 space-y-2 text-xs text-slate-300">
+                        <div class="font-bold text-navy-300 flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-bridge"></i> Studi Kasus Lapangan DPIB:
+                        </div>
+                        <p>
+                            "Sebuah jembatan rangka baja sepanjang 40 meter melintasi sungai. Pada siang hari yang terik, temperatur udara menyebabkan struktur baja memuai dan bertambah panjang hingga beberapa milimeter. Jika kedua ujung jembatan ditumpu dengan Tumpuan Sendi (kaku penuh di kedua sisi), struktur akan melengkung dan retak akibat tegangan termal. Bagaimana kombinasi jenis tumpuan yang ideal untuk solusi jembatan ini?"
+                        </p>
+                    </div>
+
+                    <!-- TAHAP 1: INPUT PENDAPAT MANDIRI -->
+                    <div id="diskusiStep1" class="space-y-4">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-navy-600 flex items-center justify-center text-xs">1</span>
+                            Tahap 1: Analisis Pendapat Mandiri (Individu)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Nama Siswa</label>
+                                <input type="text" id="discStudentName" placeholder="Masukkan nama Anda" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:border-navy-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-slate-300 mb-1">Kelas / Kelompok</label>
+                                <input type="text" id="discStudentClass" placeholder="Contoh: X DPIB 1 / Kelompok A" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:border-navy-500 outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Pendapat &amp; Analisis Mandiri Anda</label>
+                            <textarea id="discIndividualText" rows="3" placeholder="Jelaskan jenis tumpuan apa yang digunakan di ujung A dan ujung B serta alasannya..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:border-navy-500 outline-none"></textarea>
+                        </div>
+                        <button onclick="submitIndividualOpinion()" class="px-5 py-2.5 rounded-xl bg-navy-600 hover:bg-navy-500 text-white font-medium text-xs transition flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Pendapat Mandiri &amp; Buka Galeri Kelas
+                        </button>
+                    </div>
+
+                    <!-- TAHAP 2: GALERI PENDAPAT KELAS -->
+                    <div id="diskusiStep2" class="hidden space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                <span class="w-6 h-6 rounded-full bg-navy-600 flex items-center justify-center text-xs">2</span>
+                                Tahap 2: Galeri Pendapat Kelas (Transparansi Ide)
+                            </h4>
+                            <button onclick="goToStep3()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition flex items-center gap-2">
+                                Lanjut ke Kesimpulan Kelompok <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <!-- Live Opinion Cards Stream -->
+                        <div id="opinionGalleryList" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-80 overflow-y-auto pr-2">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- TAHAP 3: KESIMPULAN KELOMPOK -->
+                    <div id="diskusiStep3" class="hidden space-y-4">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-xs">3</span>
+                            Tahap 3: Diskusi &amp; Rumusan Kesimpulan Akhir Kelompok
+                        </h4>
+                        <div class="bg-amber-500/10 border border-amber-500/30 p-4 rounded-xl text-xs text-amber-200">
+                            Diskusikan bersama teman sekelompok Anda. Bandingkan pendapat dari Galeri Kelas di Tahap 2, lalu rumuskan satu kesimpulan terbaik kelompok Anda.
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Nama Kelompok &amp; Anggota</label>
+                            <input type="text" id="discGroupMembers" placeholder="Contoh: Kelompok 3 (Budi, Ani, Siti, Doni)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:border-navy-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1">Rumusan Kesimpulan Akhir Kelompok</label>
+                            <textarea id="discGroupConclusion" rows="4" placeholder="Tuliskan kesimpulan akhir kelompok tentang tumpuan mana yang dipakai di ujung A dan B serta alasannya..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-xs text-white focus:border-navy-500 outline-none"></textarea>
+                        </div>
+                        <button onclick="submitGroupConclusion()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-amber-500/20">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Submit Kesimpulan Akhir
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. VIEW MINI GAMES & MATCHING CHALLENGE -->
+            <section id="view-minigames" class="hidden space-y-6">
+                <div class="glass-panel p-6 rounded-2xl space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-gamepad text-navy-400"></i> Tantangan Match Case Konstruksi Real
+                            </h3>
+                            <p class="text-xs text-slate-400">Cocokkan gambaran kasus struktur di bawah ini dengan jenis tumpuan yang tepat!</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400">Skor Tantangan:</span>
+                            <div id="gameScoreDisplay" class="text-xl font-bold text-amber-400 font-mono">0 Poin</div>
+                        </div>
+                    </div>
+
+                    <!-- Match Game Container -->
+                    <div id="gameCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. VIEW EVALUASI (PRE-TEST & POST-TEST UNLOCK SYSTEM) -->
+            <section id="view-evaluasi" class="hidden space-y-6">
+                <div class="glass-panel p-6 rounded-2xl space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-clipboard-check text-navy-400"></i> Sistem Evaluasi Statika (Pre-Test &amp; Post-Test)
+                            </h3>
+                            <p class="text-xs text-slate-400">Soal diacak secara otomatis. Selesaikan Pre-Test terlebih dahulu untuk mengunci Post-Test.</p>
+                        </div>
+                    </div>
+
+                    <!-- Test Mode Selection Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Pre-Test Card -->
+                        <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl space-y-4 relative">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-bold text-white">1. PRE-TEST STATIKA</h4>
+                                <span id="pretestStatusBadge" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 text-xs font-semibold">Belum Selesai</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Uji diagnostik pemahaman awal Anda sebelum mempelajari modul mendalam.</p>
+                            <div class="flex items-center justify-between pt-2">
+                                <span id="pretestScoreText" class="text-xs font-mono text-slate-300">Nilai: -</span>
+                                <button onclick="startTest('pretest')" class="px-4 py-2 rounded-xl bg-navy-600 hover:bg-navy-500 text-white font-medium text-xs transition">
+                                    Mulai Pre-Test <i class="fa-solid fa-play ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Post-Test Card (Lock System) -->
+                        <div id="posttestCard" class="bg-slate-900/40 border border-slate-800/60 p-6 rounded-2xl space-y-4 relative opacity-60">
+                            <!-- Lock Overlay -->
+                            <div id="posttestLockOverlay" class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center p-4 text-center z-10">
+                                <i class="fa-solid fa-lock text-3xl text-amber-400 mb-2"></i>
+                                <h5 class="text-sm font-bold text-white">Post-Test Terkunci</h5>
+                                <p class="text-[11px] text-slate-400 mt-1 max-w-xs">Anda wajib menyelesaikan Pre-Test terlebih dahulu untuk membuka evaluasi akhir ini.</p>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-lg font-bold text-white">2. POST-TEST STATIKA</h4>
+                                <span id="posttestStatusBadge" class="px-2.5 py-1 rounded bg-slate-800 text-slate-400 text-xs font-semibold">Terkunci</span>
+                            </div>
+                            <p class="text-xs text-slate-400 leading-relaxed">Uji penguasaan akhir setelah melalui materi, virtual lab, dan diskusi kelompok.</p>
+                            <div class="flex items-center justify-between pt-2">
+                                <span id="posttestScoreText" class="text-xs font-mono text-slate-300">Nilai: -</span>
+                                <button onclick="startTest('posttest')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition">
+                                    Mulai Post-Test <i class="fa-solid fa-play ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TEST QUESTION WORKSPACE CONTAINER -->
+                    <div id="quizWorkspace" class="hidden bg-slate-900 p-6 rounded-2xl border border-navy-600 space-y-6">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <span id="quizTitleDisplay" class="text-sm font-bold text-navy-300">Pre-Test Statika</span>
+                            <span id="quizProgressText" class="text-xs font-mono text-slate-400">Soal 1 dari 4</span>
+                        </div>
+
+                        <div id="questionContainer" class="space-y-4">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+
+                        <div class="flex justify-between items-center pt-3 border-t border-slate-800">
+                            <button onclick="prevQuestion()" id="btnPrevQuiz" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
+                                &larr; Sebelumnya
+                            </button>
+                            <button onclick="nextQuestion()" id="btnNextQuiz" class="px-5 py-2 rounded-lg bg-navy-600 hover:bg-navy-500 text-white text-xs font-bold">
+                                Selanjutnya &rarr;
+                            </button>
+                            <button onclick="submitQuiz()" id="btnSubmitQuiz" class="hidden px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold">
+                                Selesai &amp; Kirim Jawaban
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- QUIZ RESULT REVIEW BOX -->
+                    <div id="quizResultBox" class="hidden glass-panel p-6 rounded-2xl space-y-4 border-l-4 border-l-emerald-500">
+                        <h4 class="text-lg font-bold text-white">Hasil Evaluasi &amp; Pembahasan</h4>
+                        <div class="flex items-center gap-6 bg-slate-900 p-4 rounded-xl border border-slate-800">
+                            <div class="text-center">
+                                <span class="text-xs text-slate-400">Skor Anda</span>
+                                <div id="finalScoreVal" class="text-3xl font-extrabold text-amber-400 font-mono">80 / 100</div>
+                            </div>
+                            <div class="flex-1 text-xs text-slate-300 space-y-1">
+                                <p id="resultFeedbackMsg">Sangat Baik! Anda telah memahami konsep reaksi tumpuan dengan tepat.</p>
+                                <p class="text-slate-400">Data nilai tercatat di penyimpanan lokal perangkat ini.</p>
+                            </div>
+                        </div>
+                        <div id="quizReviewList" class="space-y-3 pt-2">
+                            <!-- Detailed Question Breakdown -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. SECRET TEACHER PORTAL (HIDDEN BY DEFAULT, ACCESSIBLE VIA CTRL+SHIFT+G OR TRIPLE CLICK LOGO) -->
+            <section id="view-teacher" class="hidden space-y-6">
+                <div class="glass-teacher p-6 rounded-2xl space-y-6 shadow-2xl">
+                    <!-- Teacher Portal Top Header -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-amber-500/30 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-xl shadow-lg shadow-amber-500/20">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-amber-400">PORTAL GURU &amp; CMS STRUKTIVA</h3>
+                                <p class="text-xs text-slate-300">Manajemen Rekapitulasi Nilai Siswa, Kelompok Diskusi, &amp; Bank Soal Evaluasi</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="exitTeacherPortal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold">
+                                <i class="fa-solid fa-right-from-bracket"></i> Keluar Portal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Teacher 3 Navigation Tabs -->
+                    <div class="flex border-b border-amber-500/20 space-x-2 text-xs font-semibold">
+                        <button onclick="switchTeacherTab('rekap')" id="tTab-rekap" class="px-4 py-2.5 rounded-t-lg bg-amber-500/20 text-amber-300 border-t-2 border-amber-400">
+                            📊 1. Rekap Nilai &amp; Diskusi
+                        </button>
+                        <button onclick="switchTeacherTab('soal')" id="tTab-soal" class="px-4 py-2.5 rounded-t-lg bg-slate-900/60 text-slate-400 hover:text-white">
+                            📝 2. Kelola &amp; Edit Soal
+                        </button>
+                        <button onclick="switchTeacherTab('materi')" id="tTab-materi" class="px-4 py-2.5 rounded-t-lg bg-slate-900/60 text-slate-400 hover:text-white">
+                            📚 3. Tambah Materi Baru
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: REKAP NILAI & DISKUSI + EXPORT CSV -->
+                    <div id="teacherContent-rekap" class="space-y-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <h4 class="text-sm font-bold text-white">Daftar Hasil Belajar Siswa (Pre-Test vs Post-Test)</h4>
+                            <button onclick="exportToCSV()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-emerald-600/30">
+                                <i class="fa-solid fa-file-excel"></i> EXPORT KE EXCEL (.CSV)
+                            </button>
+                        </div>
+
+                        <!-- Rekap Table -->
+                        <div class="overflow-x-auto bg-slate-900/80 rounded-xl border border-amber-500/20">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-950 text-amber-300 border-b border-amber-500/20">
+                                    <tr>
+                                        <th class="p-3">Nama Siswa</th>
+                                        <th class="p-3">Kelas / Kelompok</th>
+                                        <th class="p-3 text-center">Nilai Pre-Test</th>
+                                        <th class="p-3 text-center">Nilai Post-Test</th>
+                                        <th class="p-3 text-center">Peningkatan</th>
+                                        <th class="p-3">Kesimpulan Kelompok</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="teacherRecapTableBody" class="divide-y divide-slate-800">
+                                    <!-- Populated dynamically via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: KELOLA & EDIT SOAL (TAMBAH, EDIT, HAPUS) -->
+                    <div id="teacherContent-soal" class="hidden space-y-6">
+                        <h4 class="text-sm font-bold text-white">Kelola &amp; Edit Bank Soal Evaluasi</h4>
+                        
+                        <!-- Form Edit / Tambah -->
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-amber-500/20 space-y-3 text-xs">
+                            <input type="hidden" id="editQIndex" value="-1">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-slate-300 mb-1">Kategori Soal</label>
+                                    <select id="newQCategory" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                                        <option value="pretest">Pre-Test</option>
+                                        <option value="posttest">Post-Test</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-300 mb-1">Pertanyaan Soal</label>
+                                    <input type="text" id="newQText" placeholder="Tuliskan pertanyaan statika..." class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <input type="text" id="opt0" placeholder="Pilihan A" class="bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                                <input type="text" id="opt1" placeholder="Pilihan B" class="bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                                <input type="text" id="opt2" placeholder="Pilihan C" class="bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                                <input type="text" id="opt3" placeholder="Pilihan D" class="bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-slate-300 mb-1">Kunci Jawaban Benar</label>
+                                    <select id="newQCorrect" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                                        <option value="0">Pilihan A</option>
+                                        <option value="1">Pilihan B</option>
+                                        <option value="2">Pilihan C</option>
+                                        <option value="3">Pilihan D</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-slate-300 mb-1">Teks Pembahasan Singkat</label>
+                                    <input type="text" id="newQExplanation" placeholder="Penjelasan jawaban..." class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="saveQuestionToBank()" id="btnSaveQuestion" class="px-4 py-2 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold">
+                                    <i class="fa-solid fa-plus"></i> Simpan Soal Ke Bank Data
+                                </button>
+                                <button onclick="resetQuestionForm()" class="px-4 py-2 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold">
+                                    Batal / Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Daftar Soal Aktif -->
+                        <div class="space-y-3">
+                            <h5 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Daftar Soal Aktif di Sistem</h5>
+                            <div id="teacherQuestionList" class="space-y-2">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: TAMBAH MATERI BARU -->
+                    <div id="teacherContent-materi" class="hidden space-y-4">
+                        <h4 class="text-sm font-bold text-white">Publikasi Modul Materi Tambahan / Case Study Baru</h4>
+                        <div class="bg-slate-900/80 p-4 rounded-xl border border-amber-500/20 space-y-3 text-xs">
+                            <div>
+                                <label class="block text-slate-300 mb-1">Judul Materi / Case Study</label>
+                                <input type="text" id="newMatTitle" placeholder="Contoh: Analisis Momen Pada Gelagar Cantilever" class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block text-slate-300 mb-1">Isi Konten Pembelajaran</label>
+                                <textarea id="newMatContent" rows="4" placeholder="Tulis uraian materi..." class="w-full bg-slate-950 border border-slate-700 rounded p-2 text-white"></textarea>
+                            </div>
+                            <button onclick="addNewMaterialArticle()" class="px-4 py-2 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold">
+                                <i class="fa-solid fa-upload"></i> Publikasikan Materi Tambahan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- SECRET TEACHER PIN LOGIN MODAL -->
+    <div id="teacherPinModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="glass-teacher p-6 rounded-2xl max-w-sm w-full space-y-4 text-center">
+            <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl mx-auto border border-amber-500/40">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h4 class="text-lg font-bold text-white">Akses Rahasia Portal Guru</h4>
+            <p class="text-xs text-slate-300">Masukkan PIN Keamanan Guru (Default: <span class="font-mono text-amber-400 font-bold">1234</span>)</p>
+            <input type="password" id="inputTeacherPin" maxlength="6" placeholder="Masukkan PIN" class="w-full text-center tracking-widest bg-slate-950 border border-amber-500/40 rounded-xl p-3 text-lg font-bold text-white focus:outline-none focus:border-amber-400">
+            <div class="flex gap-2">
+                <button onclick="closeTeacherLoginModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300">Batal</button>
+                <button onclick="verifyTeacherPin()" class="w-1/2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-xs font-bold text-slate-950">Masuk Portal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APPLICATION LOGIC -->
+    <script>
+        // GLOBAL APP STATE & PERSISTENCE
+        let currentUser = {
+            name: "Siswa DPIB",
+            classGroup: "X DPIB 1",
+            pretestScore: null,
+            posttestScore: null,
+            individualOpinion: "",
+            groupConclusion: ""
+        };
+
+        let logoClickCount = 0;
+        let activeView = 'beranda';
+        let currentQuizType = 'pretest';
+        let currentQuizIndex = 0;
+        let quizAnswers = [];
+        let activeQuizQuestions = [];
+
+        // INITIAL QUESTION BANK (Can be added/edited/deleted from Teacher CMS)
+        let questionBank = {
+            pretest: [
+                {
+                    question: "Tumpuan Rol pada gelagar jembatan memiliki karakteristik gaya reaksi sebagai berikut, yaitu...",
+                    options: [
+                        "Hanya gaya vertikal (Ry ≠ 0), reaksi horizontal nol (Rx = 0)",
+                        "Menahan gaya vertikal (Ry ≠ 0) dan gaya horizontal (Rx ≠ 0)",
+                        "Menahan momen putar (M ≠ 0) dan vertikal (Ry ≠ 0)",
+                        "Menahan gaya horizontal saja (Rx ≠ 0)"
+                    ],
+                    correct: 0,
+                    explanation: "Rol bebas bergeser mendatar untuk menampung pemuaian termal (Rx = 0), sehingga hanya memiliki reaksi vertikal (Ry)."
+                },
+                {
+                    question: "Suatu perletakan yang menahan gaya vertikal, horizontal, dan momen lentur kaku (0 DoF) disebut...",
+                    options: ["Tumpuan Rol", "Tumpuan Sendi", "Tumpuan Jepit", "Tumpuan Pendel"],
+                    correct: 2,
+                    explanation: "Tumpuan jepit mengikat kaku struktur sehingga menahan 3 komponen reaksi: Ry, Rx, dan Momen."
+                },
+                {
+                    question: "Berapa jumlah Derajat Kebebasan (Degree of Freedom / DoF) pada Tumpuan Sendi (Hinge)?",
+                    options: ["0 DoF", "1 DoF (Bebas Rotasi)", "2 DoF", "3 DoF"],
+                    correct: 1,
+                    explanation: "Sendi menahan Rx dan Ry tetapi membiarkan struktur berrotasi (1 DoF)."
+                },
+                {
+                    question: "Persamaan keseimbangan statika untuk menjamin struktur tidak bergerak secara mendatar adalah...",
+                    options: ["ΣFy = 0", "ΣFx = 0", "ΣM = 0", "ΣFz = 1"],
+                    correct: 1,
+                    explanation: "ΣFx = 0 menyatakan bahwa seluruh gaya horizontal yang bekerja bernilai seimbang / nol."
+                }
+            ],
+            posttest: [
+                {
+                    question: "Jika beban titik P = 20 kN bekerja tepat di tengah gelagar sederhana L = 10 m (Sendi A & Rol B), maka nilai reaksi perletakan vertikal RAy dan RBy adalah...",
+                    options: ["RAy = 10 kN, RBy = 10 kN", "RAy = 20 kN, RBy = 0 kN", "RAy = 5 kN, RBy = 15 kN", "RAy = 20 kN, RBy = 20 kN"],
+                    correct: 0,
+                    explanation: "Karena beban bekerja tepat di tengah simetris (5m), beban terbagi dua secara merata: 20 kN / 2 = 10 kN masing-masing."
+                },
+                {
+                    question: "Mengapa pada konstruksi jembatan rangka baja panjang selalu dikombinasikan antara Tumpuan Sendi dan Tumpuan Rol?",
+                    options: [
+                        "Agar jembatan bisa bergeser tanpa batas",
+                        "Untuk menampung perubahan panjang akibat pemuaian suhu udara tanpa merusak struktur",
+                        "Agar jembatan memiliki nilai momen di kedua ujungnya",
+                        "Hanya sekadar estetika arsitektur DPIB"
+                    ],
+                    correct: 1,
+                    explanation: "Tumpuan rol di salah satu ujung memberi ruang pergeseran bebas akibat pemuaian termal."
+                },
+                {
+                    question: "Bentuk diagram Momen (BMD) akibat beban titik tunggal P pada gelagar sederhana adalah berbentuk...",
+                    options: ["Garis Lurus Segiempat Flat", "Segitiga dengan nilai puncak tepat di bawah titik beban P", "Parabola kurva lengkung halus", "Garis melingkar"],
+                    correct: 1,
+                    explanation: "Beban titik menghasilkan diagram momen linier berbentuk segitiga dengan puncak Mmax tepat di bawah beban P."
+                },
+                {
+                    question: "Jika gaya luar bekerja dengan sudut kemiringan α = 60° pada gelagar, tumpuan mana yang akan menyerap gaya reaksi horizontalnya?",
+                    options: ["Tumpuan Rol", "Tumpuan Sendi (RAx = P cos α)", "Kedua tumpuan membagi dua", "Tidak ada yang menahan"],
+                    correct: 1,
+                    explanation: "Karena Rol memiliki Rx = 0, seluruh gaya horizontal diserap penuh oleh Tumpuan Sendi."
+                }
+            ]
+        };
+
+        // MATCHING GAME CARDS DATA
+        const gameItems = [
+            {
+                id: 1,
+                title: "Perletakan Gelagar Jembatan Rangka Sisi Kiri",
+                desc: "Memungkinkan rotasi akibat lenturan tetapi mengunci posisi horizontal jembatan.",
+                targetSupport: "sendi"
+            },
+            {
+                id: 2,
+                title: "Bantalan Elastomerik Beroda Sisi Kanan Jembatan",
+                desc: "Memungkinkan struktur bergerak memanjang saat suhu siang hari sangat panas.",
+                targetSupport: "rol"
+            },
+            {
+                id: 3,
+                title: "Pondasi Pilar Cantilever Kanopi Beton",
+                desc: "Tertanam kaku di dalam tanah, menahan gaya tekan, geser, serta momen dari beban angin.",
+                targetSupport: "jepit"
+            },
+            {
+                id: 4,
+                title: "Sambungan Pasak Rangka Atap Baja Ringan",
+                desc: "Titik temu batang kuda-kuda yang tidak bisa menahan momen putar.",
+                targetSupport: "sendi"
+            }
+        ];
+        let gameScores = 0;
+
+        // ON LOAD INITIALIZATION
+        window.onload = function() {
+            loadLocalStorageData();
+            initLogoSecretShortcut();
+            updateLabSimulation();
+            renderGameChallenge();
+            renderOpinionGallery();
+            renderTeacherRecap();
+            renderTeacherQuestionList();
+            updateProgressBadges();
+        };
+
+        // NAVIGATION VIEW SWITCHER
+        function switchView(viewId) {
+            activeView = viewId;
+            const views = ['beranda', 'materi', 'matrix', 'lab', 'diskusi', 'minigames', 'evaluasi', 'teacher'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                const nav = document.getElementById(`nav-${v}`);
+                if (el) el.classList.add('hidden');
+                if (nav) nav.classList.remove('active-nav');
+            });
+
+            const activeEl = document.getElementById(`view-${viewId}`);
+            const activeNav = document.getElementById(`nav-${viewId}`);
+            if (activeEl) activeEl.classList.remove('hidden');
+            if (activeNav) activeNav.classList.add('active-nav');
+
+            // Set Title Header
+            const titles = {
+                beranda: "Beranda Dashboard",
+                materi: "Modul Materi Jenis-Jenis Tumpuan",
+                matrix: "Matrix Perbandingan Karakteristik Tumpuan",
+                lab: "Virtual Lab Statika & Diagram Gaya Dalam",
+                diskusi: "Alur Diskusi Kelompok 3 Tahap",
+                minigames: "Tantangan Match Struktur Real",
+                evaluasi: "Sistem Evaluasi (Pre-Test & Post-Test)",
+                teacher: "Portal CMS Guru Statika"
+            };
+            document.getElementById('currentViewTitle').innerText = titles[viewId] || "STRUKTIVA";
+
+            // Trigger Lab resize redraw if active
+            if(viewId === 'lab') {
+                setTimeout(updateLabSimulation, 50);
+            }
+        }
+
+        // USER PROFILE & LOCALSTORAGE PERSISTENCE
+        function loadLocalStorageData() {
+            const savedUser = localStorage.getItem('struktiva_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                document.getElementById('userProfileDisplay').innerText = `${currentUser.name} (${currentUser.classGroup})`;
+            }
+            const savedQuestions = localStorage.getItem('struktiva_questions');
+            if (savedQuestions) {
+                questionBank = JSON.parse(savedQuestions);
+            }
+            if (currentUser.pretestScore !== null) {
+                unlockPostTestUI();
+            }
+        }
+
+        function saveUserData() {
+            localStorage.setItem('struktiva_user', JSON.stringify(currentUser));
+        }
+
+        function saveQuestionBankToStorage() {
+            localStorage.setItem('struktiva_questions', JSON.stringify(questionBank));
+        }
+
+        function changeUserProfile() {
+            const name = prompt("Masukkan Nama Siswa:", currentUser.name);
+            const cls = prompt("Masukkan Kelas / Kelompok:", currentUser.classGroup);
+            if (name && cls) {
+                currentUser.name = name;
+                currentUser.classGroup = cls;
+                document.getElementById('userProfileDisplay').innerText = `${name} (${cls})`;
+                saveUserData();
+            }
+        }
+
+        function updateProgressBadges() {
+            let count = 0;
+            if (currentUser.pretestScore !== null) count++;
+            if (currentUser.posttestScore !== null) count++;
+            if (currentUser.individualOpinion !== "") count++;
+            if (currentUser.groupConclusion !== "") count++;
+            document.getElementById('globalProgressText').innerText = `Progres: ${count}/4 Selesai`;
+        }
+
+        // VIRTUAL LAB SIMULATOR & REAL-TIME DIAGRAM CALCULATIONS
+        function setLabPreset(P, x, angle) {
+            document.getElementById('inputP').value = P;
+            document.getElementById('inputX').value = x;
+            document.getElementById('inputAngle').value = angle;
+            updateLabSimulation();
+        }
+
+        function updateLabSimulation() {
+            const L = 10;
+            const P = parseFloat(document.getElementById('inputP').value);
+            const x = parseFloat(document.getElementById('inputX').value);
+            const angleDeg = parseFloat(document.getElementById('inputAngle').value);
+            const rad = angleDeg * (Math.PI / 180);
+
+            const Py = P * Math.sin(rad);
+            const Px = P * Math.cos(rad);
+
+            const RAy = (Py * (L - x)) / L;
+            const RBy = (Py * x) / L;
+            const RAx = Px; // Roller B has Rx = 0
+
+            const Mmax = (Py * x * (L - x)) / L;
+
+            document.getElementById('valP').innerText = `${P} kN`;
+            document.getElementById('valX').innerText = `${x.toFixed(1)} m`;
+            document.getElementById('valAngle').innerText = `${angleDeg}°`;
+
+            document.getElementById('resRAy').innerText = `RAy = ${RAy.toFixed(2)} kN`;
+            document.getElementById('resRAx').innerText = `RAx = ${RAx.toFixed(2)} kN`;
+            document.getElementById('resRBy').innerText = `RBy = ${RBy.toFixed(2)} kN`;
+            document.getElementById('resMmax').innerText = `M = ${Mmax.toFixed(2)} kNm`;
+
+            document.getElementById('sfdValue').innerText = `Q1 = ${RAy.toFixed(2)} kN | Q2 = -${RBy.toFixed(2)} kN`;
+            document.getElementById('bmdValue').innerText = `Mmax = ${Mmax.toFixed(2)} kNm`;
+            document.getElementById('nfdValue').innerText = `N = -${RAx.toFixed(2)} kN (Tekan)`;
+
+            drawBeamCanvas(L, x, P, angleDeg, RAy, RBy, RAx);
+            drawSFDCanvas(L, x, RAy, RBy);
+            drawBMDCanvas(L, x, Mmax);
+            drawNFDCanvas(L, x, RAx);
+        }
+
+        // CANVAS DRAWING HELPERS
+        function drawBeamCanvas(L, x, P, angleDeg, RAy, RBy, RAx) {
+            const canvas = document.getElementById('beamCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const padding = 50;
+            const w = canvas.width - 2 * padding;
+            const yBeam = 70;
+            const xA = padding;
+            const xB = padding + w;
+            const xP = padding + (x / L) * w;
+
+            ctx.beginPath();
+            ctx.moveTo(xA, yBeam);
+            ctx.lineTo(xB, yBeam);
+            ctx.lineWidth = 8;
+            ctx.strokeStyle = '#94a3b8';
+            ctx.stroke();
+
+            // Support A (Sendi)
+            ctx.beginPath();
+            ctx.moveTo(xA, yBeam);
+            ctx.lineTo(xA - 15, yBeam + 25);
+            ctx.lineTo(xA + 15, yBeam + 25);
+            ctx.closePath();
+            ctx.fillStyle = '#10b981';
+            ctx.fill();
+
+            // Support B (Rol)
+            ctx.beginPath();
+            ctx.moveTo(xB, yBeam);
+            ctx.lineTo(xB - 15, yBeam + 18);
+            ctx.lineTo(xB + 15, yBeam + 18);
+            ctx.closePath();
+            ctx.fillStyle = '#06b6d4';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(xB - 8, yBeam + 23, 4, 0, Math.PI * 2);
+            ctx.arc(xB + 8, yBeam + 23, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fill();
+
+            // Load Vector P
+            const arrowLen = 40;
+            const rad = angleDeg * (Math.PI / 180);
+            const dx = Math.cos(rad) * arrowLen;
+            const dy = Math.sin(rad) * arrowLen;
+
+            ctx.beginPath();
+            ctx.moveTo(xP - dx, yBeam - dy);
+            ctx.lineTo(xP, yBeam);
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#f59e0b';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(xP, yBeam, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fill();
+
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = '11px Outfit';
+            ctx.fillText('Sendi A', xA - 18, yBeam + 40);
+            ctx.fillText('Rol B', xB - 12, yBeam + 40);
+            ctx.fillText(`P=${P}kN`, xP - 15, yBeam - dy - 8);
+        }
+
+        function drawSFDCanvas(L, x, RAy, RBy) {
+            const canvas = document.getElementById('sfdCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const p = 25;
+            const w = canvas.width - 2 * p;
+            const zeroY = 60;
+            const scale = 1.2;
+
+            const xA = p;
+            const xB = p + w;
+            const xP = p + (x / L) * w;
+
+            ctx.beginPath();
+            ctx.moveTo(xA, zeroY);
+            ctx.lineTo(xB, zeroY);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            const yRAy = zeroY - RAy * scale;
+            const yRBy = zeroY + RBy * scale;
+
+            ctx.beginPath();
+            ctx.moveTo(xA, zeroY);
+            ctx.lineTo(xA, yRAy);
+            ctx.lineTo(xP, yRAy);
+            ctx.lineTo(xP, yRBy);
+            ctx.lineTo(xB, yRBy);
+            ctx.lineTo(xB, zeroY);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.2)';
+            ctx.fill();
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = '10px Inter';
+            ctx.fillText(`+${RAy.toFixed(1)}`, xA + 5, yRAy - 4);
+            ctx.fillText(`-${RBy.toFixed(1)}`, xB - 35, yRBy + 12);
+        }
+
+        function drawBMDCanvas(L, x, Mmax) {
+            const canvas = document.getElementById('bmdCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const p = 25;
+            const w = canvas.width - 2 * p;
+            const zeroY = 25;
+            const scale = 1.2;
+
+            const xA = p;
+            const xB = p + w;
+            const xP = p + (x / L) * w;
+
+            ctx.beginPath();
+            ctx.moveTo(xA, zeroY);
+            ctx.lineTo(xB, zeroY);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            const yMmax = zeroY + Mmax * scale;
+
+            ctx.beginPath();
+            ctx.moveTo(xA, zeroY);
+            ctx.lineTo(xP, yMmax);
+            ctx.lineTo(xB, zeroY);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+            ctx.fill();
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.font = '10px Inter';
+            ctx.fillText(`Mmax: ${Mmax.toFixed(1)} kNm`, xP - 30, yMmax + 14);
+        }
+
+        function drawNFDCanvas(L, x, RAx) {
+            const canvas = document.getElementById('nfdCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const p = 25;
+            const w = canvas.width - 2 * p;
+            const zeroY = 60;
+            const scale = 1.2;
+
+            const xA = p;
+            const xB = p + w;
+            const xP = p + (x / L) * w;
+
+            ctx.beginPath();
+            ctx.moveTo(xA, zeroY);
+            ctx.lineTo(xB, zeroY);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            if (RAx > 0.1) {
+                const yN = zeroY + RAx * scale;
+                ctx.beginPath();
+                ctx.moveTo(xA, zeroY);
+                ctx.lineTo(xA, yN);
+                ctx.lineTo(xP, yN);
+                ctx.lineTo(xP, zeroY);
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(244, 63, 94, 0.2)';
+                ctx.fill();
+                ctx.strokeStyle = '#f43f5e';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#f43f5e';
+                ctx.font = '10px Inter';
+                ctx.fillText(`-${RAx.toFixed(1)} kN`, xA + 5, yN + 12);
+            }
+        }
+
+        // 3-STAGE DISCUSSION LOGIC
+        function submitIndividualOpinion() {
+            const name = document.getElementById('discStudentName').value.trim();
+            const cls = document.getElementById('discStudentClass').value.trim();
+            const opinion = document.getElementById('discIndividualText').value.trim();
+
+            if (!name || !opinion) {
+                alert("Harap lengkapi Nama dan Pendapat Mandiri Anda!");
+                return;
+            }
+
+            currentUser.name = name;
+            currentUser.classGroup = cls || currentUser.classGroup;
+            currentUser.individualOpinion = opinion;
+            saveUserData();
+
+            document.getElementById('diskusiStep1').classList.add('hidden');
+            document.getElementById('diskusiStep2').classList.remove('hidden');
+            document.getElementById('badgeStep1').className = "px-3 py-1 rounded-full bg-slate-800 text-slate-400";
+            document.getElementById('badgeStep2').className = "px-3 py-1 rounded-full bg-navy-600 text-white font-bold";
+
+            renderOpinionGallery();
+            updateProgressBadges();
+        }
+
+        function renderOpinionGallery() {
+            const galleryList = document.getElementById('opinionGalleryList');
+            if (!galleryList) return;
+
+            let opinions = JSON.parse(localStorage.getItem('struktiva_gallery')) || [
+                {
+                    name: "Ahmad Dahlan",
+                    cls: "X DPIB 1",
+                    text: "Menurut saya Ujung A harus Sendi dan Ujung B Rol, agar saat gelagar baja memuai kena panas siang hari, ujung B bisa bergeser meluncur tanpa patah."
+                },
+                {
+                    name: "Siti Nurhaliza",
+                    cls: "X DPIB 2",
+                    text: "Kalau kedua ujung memakai Sendi kaku, maka tegangan termal pemuaian akan menekan pondasi dan membuat jembatan melengkung retak."
+                }
+            ];
+
+            if (currentUser.individualOpinion !== "") {
+                opinions.unshift({
+                    name: currentUser.name,
+                    cls: currentUser.classGroup,
+                    text: currentUser.individualOpinion
+                });
+            }
+
+            galleryList.innerHTML = opinions.map(op => `
+                <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-navy-300"><i class="fa-solid fa-user-circle"></i> ${op.name}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400">${op.cls}</span>
+                    </div>
+                    <p class="text-xs text-slate-300 italic">"${op.text}"</p>
+                </div>
+            `).join('');
+        }
+
+        function goToStep3() {
+            document.getElementById('diskusiStep2').classList.add('hidden');
+            document.getElementById('diskusiStep3').classList.remove('hidden');
+            document.getElementById('badgeStep2').className = "px-3 py-1 rounded-full bg-slate-800 text-slate-400";
+            document.getElementById('badgeStep3').className = "px-3 py-1 rounded-full bg-amber-500 text-slate-950 font-bold";
+        }
+
+        function submitGroupConclusion() {
+            const groupMembers = document.getElementById('discGroupMembers').value.trim();
+            const conclusion = document.getElementById('discGroupConclusion').value.trim();
+
+            if (!groupMembers || !conclusion) {
+                alert("Harap lengkapi Nama Anggota Kelompok dan Rumusan Kesimpulan!");
+                return;
+            }
+
+            currentUser.groupConclusion = conclusion;
+            saveUserData();
+            updateProgressBadges();
+            renderTeacherRecap();
+
+            alert("Kesimpulan Kelompok Berhasil Disimpan!");
+            switchView('beranda');
+        }
+
+        // MINI GAMES MATCH CHALLENGE LOGIC
+        function renderGameChallenge() {
+            const container = document.getElementById('gameCardsContainer');
+            if (!container) return;
+
+            container.innerHTML = gameItems.map(item => `
+                <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 space-y-4">
+                    <div class="space-y-1">
+                        <span class="text-[10px] text-navy-400 uppercase font-bold tracking-wider">Studi Kasus ${item.id}</span>
+                        <h4 class="text-sm font-bold text-white">${item.title}</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">${item.desc}</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800">
+                        <button onclick="checkMatchAnswer(${item.id}, 'sendi')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-emerald-600 text-xs font-semibold text-slate-200 transition">Sendi</button>
+                        <button onclick="checkMatchAnswer(${item.id}, 'rol')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-cyan-600 text-xs font-semibold text-slate-200 transition">Rol</button>
+                        <button onclick="checkMatchAnswer(${item.id}, 'jepit')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-amber-600 text-xs font-semibold text-slate-200 transition">Jepit</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function checkMatchAnswer(itemId, chosenSupport) {
+            const item = gameItems.find(i => i.id === itemId);
+            if (item.targetSupport === chosenSupport) {
+                gameScores += 25;
+                document.getElementById('gameScoreDisplay').innerText = `${gameScores} Poin`;
+                alert(`BENAR! ${item.title} tepat menggunakan tumpuan ${chosenSupport.toUpperCase()}. (+25 Poin)`);
+            } else {
+                alert(`KURANG TEPAT! Analisis kembali karakteristik pergerakan dan derajat kebebasan struktur ini.`);
+            }
+        }
+
+        // EVALUASI PRE-TEST & POST-TEST RANDOMIZED UNLOCK SYSTEM
+        function unlockPostTestUI() {
+            const postCard = document.getElementById('posttestCard');
+            const overlay = document.getElementById('posttestLockOverlay');
+            const badge = document.getElementById('posttestStatusBadge');
+            if (postCard && overlay) {
+                postCard.classList.remove('opacity-60');
+                overlay.classList.add('hidden');
+                badge.className = "px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-semibold";
+                badge.innerText = "Terbuka";
+            }
+        }
+
+        function startTest(type) {
+            currentQuizType = type;
+            currentQuizIndex = 0;
+
+            let rawQuestions = [...questionBank[type]];
+            if (rawQuestions.length === 0) {
+                alert("Belum ada soal pada kategori ini!");
+                return;
+            }
+
+            activeQuizQuestions = shuffleArray(rawQuestions).map(q => {
+                let opts = [...q.options];
+                let correctText = opts[q.correct];
+                let shuffledOpts = shuffleArray(opts);
+                let newCorrectIndex = shuffledOpts.indexOf(correctText);
+                return {
+                    question: q.question,
+                    options: shuffledOpts,
+                    correct: newCorrectIndex,
+                    explanation: q.explanation
+                };
+            });
+
+            quizAnswers = new Array(activeQuizQuestions.length).fill(null);
+
+            document.getElementById('quizWorkspace').classList.remove('hidden');
+            document.getElementById('quizResultBox').classList.add('hidden');
+            document.getElementById('quizTitleDisplay').innerText = type === 'pretest' ? "Pre-Test Statika Bangunan" : "Post-Test Evaluasi Akhir";
+
+            renderQuizQuestion();
+        }
+
+        function shuffleArray(arr) {
+            let array = [...arr];
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function renderQuizQuestion() {
+            const container = document.getElementById('questionContainer');
+            const q = activeQuizQuestions[currentQuizIndex];
+            document.getElementById('quizProgressText').innerText = `Soal ${currentQuizIndex + 1} dari ${activeQuizQuestions.length}`;
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-white leading-relaxed">${q.question}</h4>
+                    <div class="space-y-2">
+                        ${q.options.map((opt, idx) => `
+                            <label onclick="selectQuizOption(${idx})" class="flex items-center gap-3 p-3 rounded-xl bg-slate-950 border ${quizAnswers[currentQuizIndex] === idx ? 'border-navy-400 bg-navy-900/40' : 'border-slate-800'} hover:border-navy-500 cursor-pointer transition text-xs text-slate-200">
+                                <input type="radio" name="quizOpt" ${quizAnswers[currentQuizIndex] === idx ? 'checked' : ''} class="accent-navy-500">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('btnPrevQuiz').style.visibility = currentQuizIndex === 0 ? 'hidden' : 'visible';
+            if (currentQuizIndex === activeQuizQuestions.length - 1) {
+                document.getElementById('btnNextQuiz').classList.add('hidden');
+                document.getElementById('btnSubmitQuiz').classList.remove('hidden');
+            } else {
+                document.getElementById('btnNextQuiz').classList.remove('hidden');
+                document.getElementById('btnSubmitQuiz').classList.add('hidden');
+            }
+        }
+
+        function selectQuizOption(idx) {
+            quizAnswers[currentQuizIndex] = idx;
+            renderQuizQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentQuizIndex < activeQuizQuestions.length - 1) {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                renderQuizQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            let correctCount = 0;
+            activeQuizQuestions.forEach((q, idx) => {
+                if (quizAnswers[idx] === q.correct) correctCount++;
+            });
+
+            const score = Math.round((correctCount / activeQuizQuestions.length) * 100);
+
+            if (currentQuizType === 'pretest') {
+                currentUser.pretestScore = score;
+                document.getElementById('pretestScoreText').innerText = `Nilai: ${score}`;
+                document.getElementById('pretestStatusBadge').innerText = "Selesai";
+                document.getElementById('pretestStatusBadge').className = "px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-semibold";
+                unlockPostTestUI();
+            } else {
+                currentUser.posttestScore = score;
+                document.getElementById('posttestScoreText').innerText = `Nilai: ${score}`;
+                document.getElementById('posttestStatusBadge').innerText = "Selesai";
+            }
+
+            saveUserData();
+            updateProgressBadges();
+            renderTeacherRecap();
+
+            document.getElementById('quizWorkspace').classList.add('hidden');
+            document.getElementById('quizResultBox').classList.remove('hidden');
+            document.getElementById('finalScoreVal').innerText = `${score} / 100`;
+
+            const reviewList = document.getElementById('quizReviewList');
+            reviewList.innerHTML = activeQuizQuestions.map((q, idx) => `
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-xs space-y-1">
+                    <div class="flex justify-between font-bold">
+                        <span class="text-slate-200">Soal ${idx + 1}: ${q.question}</span>
+                        <span class="${quizAnswers[idx] === q.correct ? 'text-emerald-400' : 'text-rose-400'}">${quizAnswers[idx] === q.correct ? 'Benar' : 'Salah'}</span>
+                    </div>
+                    <p class="text-slate-400 text-[11px]">Jawaban Anda: ${q.options[quizAnswers[idx]] || 'Tidak dijawab'}</p>
+                    <p class="text-amber-400/90 text-[11px]">Pembahasan: ${q.explanation}</p>
+                </div>
+            `).join('');
+        }
+
+        // HIDDEN SECRET TEACHER PORTAL TRIGGERS
+        function initLogoSecretShortcut() {
+            // Secret Trigger 1: Triple Click on Logo
+            document.getElementById('logoClickArea').addEventListener('click', () => {
+                logoClickCount++;
+                if (logoClickCount >= 3) {
+                    logoClickCount = 0;
+                    openTeacherLoginModal();
+                }
+            });
+
+            // Secret Trigger 2: Keyboard Shortcut Ctrl + Shift + G
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && (e.key === 'G' || e.key === 'g')) {
+                    e.preventDefault();
+                    openTeacherLoginModal();
+                }
+            });
+        }
+
+        function openTeacherLoginModal() {
+            document.getElementById('teacherPinModal').classList.remove('hidden');
+            document.getElementById('inputTeacherPin').focus();
+        }
+
+        function closeTeacherLoginModal() {
+            document.getElementById('teacherPinModal').classList.add('hidden');
+            document.getElementById('inputTeacherPin').value = '';
+        }
+
+        function verifyTeacherPin() {
+            const pin = document.getElementById('inputTeacherPin').value;
+            if (pin === '1234') {
+                closeTeacherLoginModal();
+                switchView('teacher');
+            } else {
+                alert("PIN Rahasia Salah!");
+            }
+        }
+
+        function exitTeacherPortal() {
+            switchView('beranda');
+        }
+
+        function switchTeacherTab(tab) {
+            ['rekap', 'soal', 'materi'].forEach(t => {
+                document.getElementById(`teacherContent-${t}`).classList.add('hidden');
+                document.getElementById(`tTab-${t}`).className = "px-4 py-2.5 rounded-t-lg bg-slate-900/60 text-slate-400 hover:text-white";
+            });
+            document.getElementById(`teacherContent-${tab}`).classList.remove('hidden');
+            document.getElementById(`tTab-${tab}`).className = "px-4 py-2.5 rounded-t-lg bg-amber-500/20 text-amber-300 border-t-2 border-amber-400 font-bold";
+        }
+
+        function renderTeacherRecap() {
+            const tbody = document.getElementById('teacherRecapTableBody');
+            if(!tbody) return;
+
+            const pre = currentUser.pretestScore !== null ? currentUser.pretestScore : '-';
+            const post = currentUser.posttestScore !== null ? currentUser.posttestScore : '-';
+            let diff = '-';
+            if (currentUser.pretestScore !== null && currentUser.posttestScore !== null) {
+                const delta = currentUser.posttestScore - currentUser.pretestScore;
+                diff = delta >= 0 ? `+${delta}` : `${delta}`;
+            }
+
+            tbody.innerHTML = `
+                <tr class="hover:bg-slate-900/40">
+                    <td class="p-3 font-bold text-white">${currentUser.name}</td>
+                    <td class="p-3 text-slate-400">${currentUser.classGroup}</td>
+                    <td class="p-3 text-center font-mono text-amber-400 font-bold">${pre}</td>
+                    <td class="p-3 text-center font-mono text-emerald-400 font-bold">${post}</td>
+                    <td class="p-3 text-center font-mono text-cyan-400">${diff}</td>
+                    <td class="p-3 text-slate-300 italic max-w-xs truncate" title="${currentUser.groupConclusion}">${currentUser.groupConclusion || 'Belum submit'}</td>
+                </tr>
+            `;
+        }
+
+        function exportToCSV() {
+            const headers = ["Nama Siswa", "Kelas", "Pre-Test Score", "Post-Test Score", "Kesimpulan Kelompok"];
+            const row = [
+                `"${currentUser.name}"`,
+                `"${currentUser.classGroup}"`,
+                currentUser.pretestScore !== null ? currentUser.pretestScore : 0,
+                currentUser.posttestScore !== null ? currentUser.posttestScore : 0,
+                `"${(currentUser.groupConclusion || '').replace(/"/g, '""')}"`
+            ];
+
+            const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), row.join(',')].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Rekap_Nilai_Statika_${currentUser.name}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // FULL QUESTION CMS: ADD, EDIT, DELETE
+        function renderTeacherQuestionList() {
+            const container = document.getElementById('teacherQuestionList');
+            if(!container) return;
+
+            let html = '';
+            ['pretest', 'posttest'].forEach(cat => {
+                html += `<div class="font-bold text-xs text-slate-400 uppercase mt-2 mb-1">${cat === 'pretest' ? 'Kategori Pre-Test' : 'Kategori Post-Test'}</div>`;
+                questionBank[cat].forEach((q, idx) => {
+                    html += `
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 flex justify-between items-center text-xs">
+                            <div class="space-y-1 max-w-xl">
+                                <div class="font-bold text-white">${idx + 1}. ${q.question}</div>
+                                <div class="text-[11px] text-slate-400">Kunci: ${q.options[q.correct]}</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editQuestion('${cat}', ${idx})" class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 hover:bg-amber-500/30">Edit</button>
+                                <button onclick="deleteQuestion('${cat}', ${idx})" class="px-2.5 py-1 rounded bg-rose-500/20 text-rose-400 hover:bg-rose-500/30">Hapus</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            container.innerHTML = html;
+        }
+
+        function saveQuestionToBank() {
+            const cat = document.getElementById('newQCategory').value;
+            const text = document.getElementById('newQText').value.trim();
+            const o0 = document.getElementById('opt0').value.trim();
+            const o1 = document.getElementById('opt1').value.trim();
+            const o2 = document.getElementById('opt2').value.trim();
+            const o3 = document.getElementById('opt3').value.trim();
+            const correct = parseInt(document.getElementById('newQCorrect').value);
+            const exp = document.getElementById('newQExplanation').value.trim();
+            const editIdx = parseInt(document.getElementById('editQIndex').value);
+
+            if (!text || !o0 || !o1 || !o2 || !o3) {
+                alert("Lengkapi semua field pertanyaan dan 4 pilihan jawaban!");
+                return;
+            }
+
+            const item = {
+                question: text,
+                options: [o0, o1, o2, o3],
+                correct: correct,
+                explanation: exp || "Penjelasan materi statika."
+            };
+
+            if (editIdx >= 0) {
+                questionBank[cat][editIdx] = item;
+                alert("Soal berhasil diperbarui!");
+            } else {
+                questionBank[cat].push(item);
+                alert("Soal baru berhasil ditambahkan!");
+            }
+
+            saveQuestionBankToStorage();
+            resetQuestionForm();
+            renderTeacherQuestionList();
+        }
+
+        function editQuestion(cat, idx) {
+            const q = questionBank[cat][idx];
+            document.getElementById('newQCategory').value = cat;
+            document.getElementById('newQText').value = q.question;
+            document.getElementById('opt0').value = q.options[0];
+            document.getElementById('opt1').value = q.options[1];
+            document.getElementById('opt2').value = q.options[2];
+            document.getElementById('opt3').value = q.options[3];
+            document.getElementById('newQCorrect').value = q.correct;
+            document.getElementById('newQExplanation').value = q.explanation;
+            document.getElementById('editQIndex').value = idx;
+
+            document.getElementById('btnSaveQuestion').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update Soal';
+        }
+
+        function deleteQuestion(cat, idx) {
+            if (confirm("Apakah Anda yakin ingin menghapus soal ini?")) {
+                questionBank[cat].splice(idx, 1);
+                saveQuestionBankToStorage();
+                renderTeacherQuestionList();
+            }
+        }
+
+        function resetQuestionForm() {
+            document.getElementById('editQIndex').value = "-1";
+            document.getElementById('newQText').value = "";
+            document.getElementById('opt0').value = "";
+            document.getElementById('opt1').value = "";
+            document.getElementById('opt2').value = "";
+            document.getElementById('opt3').value = "";
+            document.getElementById('newQExplanation').value = "";
+            document.getElementById('btnSaveQuestion').innerHTML = '<i class="fa-solid fa-plus"></i> Simpan Soal Ke Bank Data';
+        }
+
+        function addNewMaterialArticle() {
+            const title = document.getElementById('newMatTitle').value.trim();
+            const content = document.getElementById('newMatContent').value.trim();
+
+            if (!title || !content) {
+                alert("Harap lengkapi Judul dan Konten Materi!");
+                return;
+            }
+
+            alert(`Materi Baru "${title}" Berhasil Dipublikasikan!`);
+            document.getElementById('newMatTitle').value = "";
+            document.getElementById('newMatContent').value = "";
+        }
+    </script>
+</body>
+</html>
